@@ -18,8 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TechnitiumLibrary.Net.Dns;
+using TechnitiumLibrary.Net.Dns.ResourceRecords;
 using TechnitiumLibrary.Net.Proxy;
 
 namespace DnsServerCore.ApplicationCommon
@@ -29,14 +31,16 @@ namespace DnsServerCore.ApplicationCommon
     /// </summary>
     public interface IDnsServer : IDnsClient
     {
-        /// <summary>
-        /// Allows querying the DNS server core directly. This call supports recursion even if its not enabled in the DNS server configuration. The request wont be routed to any of the installed DNS Apps except for processing APP records. The request and its response are not counted in any stats or logged.
-        /// </summary>
-        /// <param name="question">The question record containing the details to query.</param>
-        /// <param name="timeout">The timeout value in milliseconds to wait for response.</param>
-        /// <returns>The DNS response for the DNS query.</returns>
-        /// <exception cref="TimeoutException">When request times out.</exception>
-        Task<DnsDatagram> DirectQueryAsync(DnsQuestionRecord question, int timeout = 4000);
+
+        public void ListAllZoneRecords(string zoneName, List<DnsResourceRecord> records);
+		/// <summary>
+		/// Allows querying the DNS server core directly. This call supports recursion even if its not enabled in the DNS server configuration. The request wont be routed to any of the installed DNS Apps except for processing APP records. The request and its response are not counted in any stats or logged.
+		/// </summary>
+		/// <param name="question">The question record containing the details to query.</param>
+		/// <param name="timeout">The timeout value in milliseconds to wait for response.</param>
+		/// <returns>The DNS response for the DNS query.</returns>
+		/// <exception cref="TimeoutException">When request times out.</exception>
+		Task<DnsDatagram> DirectQueryAsync(DnsQuestionRecord question, int timeout = 4000);
 
         /// <summary>
         /// Allows querying the DNS server core directly. This call supports recursion even if its not enabled in the DNS server configuration. The request wont be routed to any of the installed DNS Apps except for processing APP records. The request and its response are not counted in any stats or logged.

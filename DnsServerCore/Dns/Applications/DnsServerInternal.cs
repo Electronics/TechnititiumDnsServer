@@ -19,9 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using DnsServerCore.ApplicationCommon;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TechnitiumLibrary.Net.Dns;
+using TechnitiumLibrary.Net.Dns.ResourceRecords;
 using TechnitiumLibrary.Net.Proxy;
 
 namespace DnsServerCore.Dns.Applications
@@ -47,11 +49,15 @@ namespace DnsServerCore.Dns.Applications
             _applicationFolder = applicationFolder;
         }
 
-        #endregion
+		#endregion
 
-        #region public
+		#region public
 
-        public Task<DnsDatagram> DirectQueryAsync(DnsQuestionRecord question, int timeout = 4000)
+		public void ListAllZoneRecords(string zoneName, List<DnsResourceRecord> records) {
+            _dnsServer.AuthZoneManager.ListAllZoneRecords(zoneName, records);
+        }
+
+		public Task<DnsDatagram> DirectQueryAsync(DnsQuestionRecord question, int timeout = 4000)
         {
             return _dnsServer.DirectQueryAsync(question, timeout, true);
         }
